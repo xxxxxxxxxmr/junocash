@@ -23,9 +23,10 @@ WORKDIR /root/.junocash
 # Copy binaries
 COPY --from=builder /build/src/junocashd /usr/local/bin/
 COPY --from=builder /build/src/junocash-cli /usr/local/bin/
-COPY --from=builder /build/zcutil/fetch-params.sh /usr/local/bin/junocash-fetch-params
-# Download Zcash params
-RUN /usr/local/bin/junocash-fetch-params
+
+# Copy daemon config (/root/.junocash/junocashd.conf)
+COPY ./junocashd.conf /root/.junocash/
+
 # Expose ports (P2P and RPC)
 EXPOSE 8232 8233
 ENTRYPOINT ["junocashd"]
