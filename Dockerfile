@@ -24,10 +24,11 @@ WORKDIR /root/.junocash
 COPY --from=builder /build/src/junocashd /usr/local/bin/
 COPY --from=builder /build/src/junocash-cli /usr/local/bin/
 
-# Copy daemon config (/root/.junocash/junocashd.conf)
-COPY ./junocashd.conf /root/.junocash/
+# Copy entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 # Expose ports (P2P and RPC)
 EXPOSE 8232 8233
-ENTRYPOINT ["junocashd"]
-CMD ["-printtoconsole"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["junocashd", "-printtoconsole"]
